@@ -43,3 +43,19 @@ particular opinion N/G, the rewiring probability Pr , and the threshold value U.
 U is an integer number, it is convenient to express this quantity normalized respect to the number of possible
 options G . Then, we define the normalized threshold for interaction as u ≡ U/G, such that u ∈ (0, 1]. We shall fix
 <k> and N/G and study the collective behavior of the system in terms of the parameters Pr and u.
+
+
+
+Python scripts:
+    Main:
+	    -heat_map_active_links_density_simulation:Makes the heatmap of active links density for a given (r,d)
+        -heat_map_delta_q:Makes de heatmap of delta modularity for a given (r,d)
+        -heat_map_S:makes a heat map of S(r,d)
+	    -heat_map_MD: Makes a heatmap of S(U,Pr)
+    Others:
+	    -active_links_denity: Return the density of active links given (file_matrix,file_states)
+	    -modularity:    retunrs the modularity of a network given by community louvain
+	    -model:         Plots the time evolution of the desity of active links according to the model obtained for a given (r,d)
+	    -largest_cc:    Returns the largest connected component in a network 
+	    -plot_U_vs_Pr:  Makes a plot of U vs Pr for a given U
+	    -reading:       Plots the time evolution of the density of active links of the model and the simulation for a given (r,d)

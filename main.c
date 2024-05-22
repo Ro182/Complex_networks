@@ -6,7 +6,7 @@
 #include <stdbool.h>
 #include<unistd.h>
 #include <gsl/gsl_rng.h>
-#define MAX_THREADS 64
+#define MAX_THREADS 8
 
 /*This function returns a random int between 0 and RAND_MAX*/
 unsigned long int rand_int(void *ptr){
@@ -16,17 +16,17 @@ unsigned long int rand_int(void *ptr){
 
 /*This structures contains all the variables of the system*/
 struct Inputs{
-    int N;
-    int time;
-    int k;
-    int G;
-    int runs;
-    int size;
-    float d;
-    float r;
-    float U;
-    float Pr;
-    float Pc;
+    int N; //Size of the network
+    int time; //Number of time steps 
+    int k; //Average degree of the network
+    int G; //Number of possible states of the nodes
+    int runs; //Number of runs
+    int size; //Number of data points
+    float d; //Probability of disconnection
+    float r; //Probability of reconnection
+    float U; //Threshold for the node dynamic
+    float Pr; //Probability of rewiring dynamics
+    float Pc; //Probability of node dynamics (copying states)
     unsigned int thread_id;
 
 };
@@ -258,7 +258,7 @@ void section(void *ptr){
     for (int run=0;run<runs;run++){
 
             char info_1[20];
-            sprintf(info_1,"Pr_%d_run%d",thread_id,run);
+            sprintf(info_1,"Pr_%d_run%d.dat",thread_id,run);
             /*here we created the matrix for the network and the list for the states*/
             int *matrix;
             double *list_states;
@@ -274,8 +274,8 @@ void section(void *ptr){
                     *(list_states+i)=(double)(rand_int(rng_r)%G)/G;
                 }
 
-            char name_states_initial[50]="states_i_";
-            char name_states_final[50]="states_f_";
+            char name_states_initial[50]="./1_Data_example/states_i_";
+            char name_states_final[50]="./1_Data_example/states_f_";
 
             strcat(name_states_initial,info_1 );
             strcat(name_states_final,info_1 );
@@ -294,8 +294,8 @@ void section(void *ptr){
                     }
                 }
             }
-            char name_links_initial[50]="links_i_MD_";
-            char name_links_final[50]="links_f_MD_";
+            char name_links_initial[50]="./1_Data_example/links_i_MD_";
+            char name_links_final[50]="./1_Data_example/links_f_MD_";
 
             strcat(name_links_final,info_1);
             strcat(name_links_initial,info_1);
@@ -322,7 +322,7 @@ void section(void *ptr){
 }
 
 /*The main function is in charge the parallelize the code so it can be run with multiple threads*/
-void main(){
+int main(){
 
     /*size and definition correspond to the number of data points wanted*/
     struct Inputs inputs[MAX_THREADS];
@@ -332,11 +332,11 @@ void main(){
     /*Here there are the parameter that are going to be send to each thread*/
     /*Here, the variables that must change can be set to different values for example Pr and Pc in this case*/
     for (int thread=0;thread<MAX_THREADS;thread++){
-        inputs[thread].N=3200;
-        inputs[thread].time=10000;
+        inputs[thread].N=30;
+        inputs[thread].time=100;
         inputs[thread].k=4;
-        inputs[thread].G=320;
-        inputs[thread].runs=100;
+        inputs[thread].G=30;
+        inputs[thread].runs=10;
         inputs[thread].size=size;
         inputs[thread].d=0.35;
         inputs[thread].r=0.65;
@@ -357,5 +357,6 @@ void main(){
     for (int thread=0;thread<MAX_THREADS;thread++){
         pthread_join(thread_ids[thread],NULL);
     }
-
+    
+    return 0;
 }
