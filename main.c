@@ -332,10 +332,10 @@ int main(){
     /*Here there are the parameter that are going to be send to each thread*/
     /*Here, the variables that must change can be set to different values for example Pr and Pc in this case*/
     for (int thread=0;thread<MAX_THREADS;thread++){
-        inputs[thread].N=30;
+        inputs[thread].N=50;
         inputs[thread].time=100;
         inputs[thread].k=4;
-        inputs[thread].G=30;
+        inputs[thread].G=50;
         inputs[thread].runs=10;
         inputs[thread].size=size;
         inputs[thread].d=0.35;
